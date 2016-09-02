@@ -11,7 +11,9 @@ DIRS = {
 desc 'Setup the directories'
 task :setup do
     DIRS.each_value do |p|
-        p.mkpath()
-        puts "Created directory: #{p}"
+        unless p.exist?
+            p.mkpath()
+            puts "Created directory: #{p}"
+        end
     end
 end
