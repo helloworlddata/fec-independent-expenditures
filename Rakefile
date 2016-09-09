@@ -4,7 +4,7 @@ WRANGLE_DIR = Pathname 'wrangle'
 CORRAL_DIR = WRANGLE_DIR / 'corral'
 SCRIPTS = WRANGLE_DIR / 'scripts'
 DIRS = {
-    'fetched' => CORRAL_DIR /'fetched',
+    'fetched' => CORRAL_DIR / 'fetched',
     'published' => DATA_DIR,
 }
 
