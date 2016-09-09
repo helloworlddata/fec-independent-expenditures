@@ -25,4 +25,4 @@ if __name__ == '__main__':
     resp = requests.get(url, stream=True)
     for chunk in resp.iter_content(chunk_size=1024):
         if chunk:
-            stdout.write(chunk)
+            stdout.buffer.write(chunk)
