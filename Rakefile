@@ -9,10 +9,7 @@ DIRS = {
 }
 
 
-F_FILES = {
-  'something' => DIRS['fetched'] / 'something.csv'
-}
-
+F_FILES = Hash[['2010', '2012', '2014', '2016'].map{|y| [y, DIRS['fetched'] / "#{y}.csv"]}]
 
 desc 'Setup the directories'
 task :setup do
@@ -25,19 +22,20 @@ task :setup do
 end
 
 
-namespace :publish do
-  desc "Fetch everything"
-  task :fetch  => [:setup] do
-    F_FILES.each_value{|fn| Rake::Task[fn].execute() }
-  end
 
-  desc "Compile everything"
-  task :compile  => [:setup] do
-    C_FILES.each_value{|fn| Rake::Task[fn].execute() }
+task :fetch  => [:setup] do
+  F_FILES.each_pair do |year, fname|
+    url = "http://www.fec.gov/data/IndependentExpenditure.do?format=csv&election_yr=#{year}"
+    sh "curl '#{url}' -o #{fname}"
   end
+end
 
-  desc "publish everything"
-  task :publish  => [:setup] do
-    P_FILES.each_value{|fn| Rake::Task[fn].execute() }
-  end
+desc "Compile everything"
+task :compile  => [:setup] do
+  C_FILES.each_value{|fn| Rake::Task[fn].execute() }
+end
+
+desc "publish everything"
+task :publish  => [:setup] do
+  P_FILES.each_value{|fn| Rake::Task[fn].execute() }
 end
